@@ -1,5 +1,10 @@
 import React from 'react'
-
-export default () => {
-    return <div><h3>Notes App</h3></div>
+import LandingPage from './pages/Landing'
+const App = () => {
+	return <div>
+		<h3>Notes App</h3>
+		<LandingPage />
+	</div>
 }
+
+export default App

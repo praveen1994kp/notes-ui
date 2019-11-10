@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import App from './App'
+import AppContainer from './AppContainer'
 
 const render = Component =>
     ReactDOM.render(
@@ -9,5 +9,5 @@ const render = Component =>
         document.getElementById('AppContainer')
     );
 
-render(App);
-if (module.hot) module.hot.accept('./App', () => render(App));
+render(AppContainer);
+if (module.hot) module.hot.accept('./App', () => render(AppContainer));
