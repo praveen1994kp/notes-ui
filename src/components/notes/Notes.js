@@ -3,8 +3,12 @@ import NoteDisplay from './NoteDisplay'
 
 const Notes = ({ notes, addNote, updateNote }) => {
 
+    const getNoteId = () => {
+        return `N-${notes.length + 1}`
+    }
+
     const handleNoteAdd = () => {
-        addNote({ title: 'Enter Title', content: 'Type Something...' })
+        addNote({ id: getNoteId(), title: 'Enter Title', content: 'Type Something...' })
     }
 
     const handleNoteUpdate = (id, title, content) => {
@@ -13,10 +17,10 @@ const Notes = ({ notes, addNote, updateNote }) => {
 
     return (
         <div className="mt-5 col-6">
-            {notes.map((note, index) => {
-                return <NoteDisplay onChange={handleNoteUpdate} key={index} id={index} content={note.content} title={note.title} lastMod={note.lastMod} />
+            {notes.sort((a, b) => b.lastMod - a.lastMod).map((note) => {
+                return <NoteDisplay onChange={handleNoteUpdate} key={note.id} id={note.id} content={note.content} title={note.title} lastMod={note.lastMod} />
             })}
-            <h4 onClick={handleNoteAdd}>Add Note</h4>
+            <button className="btn btn-light m-2" onClick={handleNoteAdd}><h4>Add Note</h4></button>
         </div>
     )
 }

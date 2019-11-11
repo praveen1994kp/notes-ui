@@ -34,8 +34,9 @@ const NoteDisplay = (props) => {
         <div style={style.note} className="m-2 p-3">
             {noteState &&
                 <React.Fragment>
-                    <h3><input onBlur={saveNote} onChange={handleTitleChange} style={style.input} value={noteState.title}></input></h3>
-                    <p><input onBlur={saveNote} onChange={handleContentChange} style={style.input} value={noteState.content} /></p>
+                    <button onClick={saveNote} className="btn btn-primary float-right">Save</button>
+                    <h3><input onChange={handleTitleChange} style={style.input} value={noteState.title}></input></h3>
+                    <p><input onChange={handleContentChange} style={style.input} value={noteState.content} /></p>
                     <small>{noteState.lastMod ? noteState.lastMod.toString() : ''}</small>
                 </React.Fragment>
             }

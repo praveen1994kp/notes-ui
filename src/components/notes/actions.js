@@ -1,10 +1,11 @@
 export const ADD_NOTE = 'ADD_NOTE'
 export const UPDATE_NOTE = 'UPDATE_NOTE'
 
-export const addNote = ({ title, content }) => {
+export const addNote = ({ id, title, content }) => {
     return {
         type: ADD_NOTE,
         payload: {
+            id,
             title,
             content,
             lastMod: new Date()

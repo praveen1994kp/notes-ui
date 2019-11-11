@@ -4,8 +4,9 @@ export const notes = (state = [], { type, payload }) => {
     switch (type) {
         case ADD_NOTE:
             {
-                const { title, content, lastMod } = payload
+                const { id, title, content, lastMod } = payload
                 return state.concat({
+                    id,
                     title,
                     content,
                     lastMod
@@ -14,9 +15,10 @@ export const notes = (state = [], { type, payload }) => {
         case UPDATE_NOTE:
             {
                 const { id, title, content, lastMod } = payload
-                return state.map((note, index) => {
-                    if (index === id) {
+                return state.map((note) => {
+                    if (note.id === id) {
                         return {
+                            id,
                             title,
                             content,
                             lastMod
