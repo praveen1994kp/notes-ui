@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import TextAreaExpandable from '../common/TextAreaExpandable'
 
 
 const style = {
@@ -6,7 +7,8 @@ const style = {
         boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
     },
     input: {
-        border: 'none'
+        border: 'none',
+        height: '50px'
     }
 }
 const NoteDisplay = (props) => {
@@ -30,13 +32,22 @@ const NoteDisplay = (props) => {
         props.onChange(props.id, title, content)
     }
 
+    const deleteNote = () => {
+        props.onDelete(props.id)
+    }
+
     return (
         <div style={style.note} className="m-2 p-3">
             {noteState &&
                 <React.Fragment>
-                    <button onClick={saveNote} className="btn btn-primary float-right">Save</button>
-                    <h3><input onChange={handleTitleChange} style={style.input} value={noteState.title}></input></h3>
-                    <p><input onChange={handleContentChange} style={style.input} value={noteState.content} /></p>
+                    <div className='row'>
+                        <h3 className='col-8'><input onChange={handleTitleChange} style={style.input} value={noteState.title}></input></h3>
+                        <div className='col-4'>
+                            <button onClick={saveNote} className='btn btn-primary float-right btn-sm m-1'>Save</button>
+                            <button onClick={deleteNote} className='btn btn-secondary float-right btn-sm m-1' >Clear</button>
+                        </div>
+                    </div>
+                    <p><TextAreaExpandable onChange={handleContentChange} style={style.input} value={noteState.content} /></p>
                     <small>{noteState.lastMod ? noteState.lastMod.toString() : ''}</small>
                 </React.Fragment>
             }

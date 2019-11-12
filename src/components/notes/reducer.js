@@ -1,4 +1,5 @@
-import { ADD_NOTE, UPDATE_NOTE } from './actions'
+import { ADD_NOTE, UPDATE_NOTE, DELETE_NOTE } from './actions'
+import _ from 'lodash'
 
 export const notes = (state = [], { type, payload }) => {
     switch (type) {
@@ -26,6 +27,11 @@ export const notes = (state = [], { type, payload }) => {
                     }
                     return note
                 })
+            }
+        case DELETE_NOTE:
+            {
+                const {id} = payload
+                return _.remove(...state, note => note.id === id)
             }
         default:
             return state
