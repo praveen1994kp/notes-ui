@@ -31,7 +31,7 @@ export const notes = (state = [], { type, payload }) => {
         case DELETE_NOTE:
             {
                 const {id} = payload
-                return _.remove(...state, note => note.id === id)
+                return _.remove(state, note => note.id !== id)
             }
         default:
             return state
