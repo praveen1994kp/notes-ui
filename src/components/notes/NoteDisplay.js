@@ -60,7 +60,7 @@ const NoteDisplay = (props) => {
                         <h3 className='col-8'><input onChange={handleTitleChange} style={style.input} value={noteState.title}></input></h3>
                         <div className='col-4'>
                             <button style={btnStyles} onClick={saveNote} className='btn btn-primary float-right btn-sm m-1'>Save</button>
-                            <button style={btnStyles} onClick={deleteNote} className='btn btn-secondary float-right btn-sm m-1' >Clear</button>
+                            <button onClick={deleteNote} className='btn btn-secondary float-right btn-sm m-1' >Delete</button>
                         </div>
                     </div>
                     <p><TextAreaExpandable onChange={handleContentChange} style={style.input} value={noteState.content} /></p>
