@@ -9,14 +9,29 @@ const style = {
     input: {
         border: 'none',
         height: '50px'
+    },
+    readMode: {
+        display: 'none'
     }
 }
 const NoteDisplay = (props) => {
     const [noteState, setNoteState] = useState({ title: '', content: '', lastMod: null })
+    const [isDirty, setIsDirty] = useState(false)
     useEffect(() => {
         setNoteState(props)
     }, [props.title, props.content, props.lastMod])
 
+    useEffect(() => {
+        setIsDirty(compareState())
+    }, [noteState.title, noteState.content, props.lastMod])
+
+    const compareState = () => {
+        if (noteState.title !== props.title)
+            return true
+        if (noteState.content !== props.content)
+            return true
+        return false
+    }
     const handleTitleChange = (e) => {
         e.preventDefault()
         setNoteState({ ...noteState, title: e.target.value })
@@ -36,6 +51,7 @@ const NoteDisplay = (props) => {
         props.onDelete(props.id)
     }
 
+    let btnStyles = isDirty ? null : style.readMode
     return (
         <div style={style.note} className="m-2 p-3">
             {noteState &&
@@ -43,8 +59,8 @@ const NoteDisplay = (props) => {
                     <div className='row'>
                         <h3 className='col-8'><input onChange={handleTitleChange} style={style.input} value={noteState.title}></input></h3>
                         <div className='col-4'>
-                            <button onClick={saveNote} className='btn btn-primary float-right btn-sm m-1'>Save</button>
-                            <button onClick={deleteNote} className='btn btn-secondary float-right btn-sm m-1' >Clear</button>
+                            <button style={btnStyles} onClick={saveNote} className='btn btn-primary float-right btn-sm m-1'>Save</button>
+                            <button style={btnStyles} onClick={deleteNote} className='btn btn-secondary float-right btn-sm m-1' >Clear</button>
                         </div>
                     </div>
                     <p><TextAreaExpandable onChange={handleContentChange} style={style.input} value={noteState.content} /></p>
