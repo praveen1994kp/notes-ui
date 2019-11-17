@@ -1,6 +1,6 @@
 # notes-ui
 
-### Simple react app for managing test notes
+### Simple react app for managing notes
 
 Saves note to browser storage
 
