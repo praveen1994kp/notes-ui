@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import rootReducer from './reducer'
 import { loadNotes } from '../loadNotes'
 import { getStorageMiddleware } from '../saveStore'
-import { NOTES_LOCAL_STORAGE_ID } from '../components/notes/Notes'
+import { NOTES_LOCAL_STORAGE_ID } from './constants'
 
 const preloadedState = {
     notes: loadNotes()

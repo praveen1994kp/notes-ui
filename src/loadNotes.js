@@ -1,4 +1,4 @@
-import { NOTES_LOCAL_STORAGE_ID } from './components/notes/Notes'
+import { NOTES_LOCAL_STORAGE_ID } from './redux/constants'
 
 export const loadNotes = () => {
     const storedState = localStorage.getItem(NOTES_LOCAL_STORAGE_ID)
