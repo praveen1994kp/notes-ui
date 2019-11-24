@@ -5,7 +5,8 @@ import NoteDisplay from './NoteDisplay'
 
 const useStyles = makeStyles(theme => ({
     root: {
-        flexGrow: 1
+        flexGrow: 1,
+        marginTop: theme.spacing(2)
     }
 }))
 

@@ -11,11 +11,13 @@ import Typography from '@material-ui/core/Typography'
 import CopyIcon from '@material-ui/icons/FileCopy'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
+import Grow from '@material-ui/core/Grow';
 import moment from "moment";
+import { minWidth } from '@material-ui/system'
 
 const useStyles = makeStyles(theme => ({
     card: {
-        maxWidth: 345
+        width: 345
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -39,36 +41,38 @@ export default function Note({ title, lastMod, content }) {
     }
 
     return (
-        <Card className={classes.card}>
-            <CardHeader action={
-                <IconButton aria-label='settings'>
-                    <MoreVertIcon />
-                </IconButton>
-            }
-                title={title}
-                subheader={lastMod ? moment(lastMod).format('MMMM Do YYYY') : ''}
-            />
-            <CardActions disableSpacing>
-                <IconButton aria-label='share'>
-                    <CopyIcon />
-                </IconButton>
-                <IconButton className={clsx(classes.expand, {
-                    [classes.expandOpen]: expanded
-                })}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label='show more'
-                >
-                    <ExpandMoreIcon />
-                </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout='auto' unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>
-                        {content}
-                    </Typography>
-                </CardContent>
-            </Collapse>
-        </Card>
+        <Grow in {...({ timeout: Math.random() * 1500 })}>
+            <Card className={classes.card}>
+                <CardHeader action={
+                    <IconButton aria-label='settings'>
+                        <MoreVertIcon />
+                    </IconButton>
+                }
+                    title={title}
+                    subheader={lastMod ? moment(lastMod).format('MMMM Do YYYY') : ''}
+                />
+                <CardActions disableSpacing>
+                    <IconButton aria-label='share'>
+                        <CopyIcon />
+                    </IconButton>
+                    <IconButton className={clsx(classes.expand, {
+                        [classes.expandOpen]: expanded
+                    })}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label='show more'
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout='auto' unmountOnExit>
+                    <CardContent>
+                        <Typography paragraph>
+                            {content}
+                        </Typography>
+                    </CardContent>
+                </Collapse>
+            </Card>
+        </Grow>
     )
 }
