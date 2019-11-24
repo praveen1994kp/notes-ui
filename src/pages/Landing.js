@@ -1,9 +1,20 @@
 import React from 'react'
-import NotesContainer from '../components/notes/NotesContainer'
+import {Typography, Container} from '@material-ui/core'
+import NoteSample from './NoteSample'
+/* import NotesContainer from '../components/notes/NotesContainer' */
+
+
+
 const Landing = () => {
     return (
-        <div><NotesContainer/></div>
+        <React.Fragment>
+            <Container maxWidth = 'lg'>
+                <Typography component='div' style={{height: '100vh' }} ><NoteSample /></Typography>
+            </Container>
+        </React.Fragment>
     )
 }
 
 export default Landing
+
+/*<div><NotesContainer/></div>*/
