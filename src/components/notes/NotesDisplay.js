@@ -26,7 +26,7 @@ export default function NotesDisplay({ notes, addNote }) {
         <div className={classes.root} >
             <Editor onSave={handleNoteAdd} />
             <Grid container spacing={5}>
-                {notes.sort((a, b) => b.lastMod - a.lastMod).map(note => (
+                {notes.sort((a, b) => new Date(b.lastMod) - new Date(a.lastMod)).map(note => (
                     <Grid key={note.id} item>
                         <NoteDisplay
                             id={note.id}
