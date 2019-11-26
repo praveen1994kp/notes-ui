@@ -1,74 +1,78 @@
-import React, { useState, useEffect } from 'react'
-import TextAreaExpandable from '../common/TextAreaExpandable'
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import clsx from 'clsx'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import Collapse from '@material-ui/core/Collapse'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import CopyIcon from '@material-ui/icons/FileCopy'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import Grow from '@material-ui/core/Grow';
+import moment from "moment";
+import { minWidth } from '@material-ui/system'
 
-
-const style = {
-    note: {
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+const useStyles = makeStyles(theme => ({
+    card: {
+        width: 345
     },
-    input: {
-        border: 'none',
-        height: '50px'
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest
+        })
     },
-    readMode: {
-        display: 'none'
+    expandOpen: {
+        transform: 'rotate(180deg)'
     }
-}
-const NoteDisplay = (props) => {
-    const [noteState, setNoteState] = useState({ title: '', content: '', lastMod: null })
-    const [isDirty, setIsDirty] = useState(false)
-    useEffect(() => {
-        setNoteState(props)
-    }, [props.title, props.content, props.lastMod])
+}))
 
-    useEffect(() => {
-        setIsDirty(compareState())
-    }, [noteState.title, noteState.content, props.lastMod])
 
-    const compareState = () => {
-        if (noteState.title !== props.title)
-            return true
-        if (noteState.content !== props.content)
-            return true
-        return false
-    }
-    const handleTitleChange = (e) => {
-        e.preventDefault()
-        setNoteState({ ...noteState, title: e.target.value })
+export default function Note({ title, lastMod, content }) {
+    const classes = useStyles()
+    const [expanded, setExpanded] = React.useState(true)
+
+    const handleExpandClick = () => {
+        setExpanded(!expanded)
     }
 
-    const handleContentChange = (e) => {
-        e.preventDefault()
-        setNoteState({ ...noteState, content: e.target.value })
-    }
-
-    const saveNote = () => {
-        const { title, content } = noteState
-        props.onChange(props.id, title, content)
-    }
-
-    const deleteNote = () => {
-        props.onDelete(props.id)
-    }
-
-    let btnStyles = isDirty ? null : style.readMode
     return (
-        <div style={style.note} className="m-2 p-3">
-            {noteState &&
-                <React.Fragment>
-                    <div className='row'>
-                        <h3 className='col-8'><input onChange={handleTitleChange} style={style.input} value={noteState.title}></input></h3>
-                        <div className='col-4'>
-                            <button style={btnStyles} onClick={saveNote} className='btn btn-primary float-right btn-sm m-1'>Save</button>
-                            <button onClick={deleteNote} className='btn btn-secondary float-right btn-sm m-1' >Delete</button>
-                        </div>
-                    </div>
-                    <p><TextAreaExpandable onChange={handleContentChange} style={style.input} value={noteState.content} /></p>
-                    <small>{noteState.lastMod ? noteState.lastMod.toString() : ''}</small>
-                </React.Fragment>
-            }
-        </div>
+        <Grow in {...({ timeout: Math.random() * 1500 })}>
+            <Card className={classes.card}>
+                <CardHeader action={
+                    <IconButton aria-label='settings'>
+                        <MoreVertIcon />
+                    </IconButton>
+                }
+                    title={title}
+                    subheader={lastMod ? moment(lastMod).format('MMMM Do YYYY') : ''}
+                />
+                <CardActions disableSpacing>
+                    <IconButton aria-label='share'>
+                        <CopyIcon />
+                    </IconButton>
+                    <IconButton className={clsx(classes.expand, {
+                        [classes.expandOpen]: expanded
+                    })}
+                        onClick={handleExpandClick}
+                        aria-expanded={expanded}
+                        aria-label='show more'
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </CardActions>
+                <Collapse in={expanded} timeout='auto' unmountOnExit>
+                    <CardContent>
+                        <Typography paragraph>
+                            {content}
+                        </Typography>
+                    </CardContent>
+                </Collapse>
+            </Card>
+        </Grow>
     )
 }
-
-export default NoteDisplay

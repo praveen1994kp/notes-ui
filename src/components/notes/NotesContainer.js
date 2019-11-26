@@ -1,6 +1,5 @@
-import React from 'react'
 import { connect } from 'react-redux'
-import Notes from './Notes'
+import NotesDisplay from './NotesDisplay'
 import { addNote, updateNote, deleteNote } from './actions'
 
 const mapStateToProps = (state) => {
@@ -14,4 +13,4 @@ export default connect(mapStateToProps, {
     addNote,
     updateNote,
     deleteNote
-})(Notes)
+})(NotesDisplay)
