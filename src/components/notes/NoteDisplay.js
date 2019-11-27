@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import Card from '@material-ui/core/Card'
@@ -13,7 +13,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Grow from '@material-ui/core/Grow';
 import moment from "moment";
-import { minWidth } from '@material-ui/system'
+import { MenuItem, Select } from '@material-ui/core'
+
+import EditorBig from "./EditorBig";
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -32,47 +34,85 @@ const useStyles = makeStyles(theme => ({
 }))
 
 
-export default function Note({ title, lastMod, content }) {
+
+
+export default function Note({ id, title, lastMod, content, onDelete, onUpdate }) {
     const classes = useStyles()
-    const [expanded, setExpanded] = React.useState(true)
+    const [expanded, setExpanded] = useState(true)
+    const [editorOn, setEditorOn] = useState(false)
+
+    const handleDelete = () => {
+        onDelete(id)
+    }
+
+    const onEditorClose = () => {
+        setEditorOn(false)
+    }
+
+    const handleNoteSave = (id,title,content) => {
+        onUpdate(id,title,content)
+        setEditorOn(false)
+    }
+
+    const handleOptionsChange = event => {
+        const value = event.target.value
+        switch (value) {
+            case 'delete':
+                handleDelete()
+                break
+            case 'edit':
+                setEditorOn(true)
+                break
+        }
+    }
+
+    const NoteOptions = () => {
+        return (
+            <Select value='' onChange={handleOptionsChange} disableUnderline IconComponent={MoreVertIcon}>
+                <MenuItem value='edit'>Edit</MenuItem>
+                <MenuItem value='delete'>Delete</MenuItem>
+            </Select>
+        )
+    }
 
     const handleExpandClick = () => {
         setExpanded(!expanded)
     }
 
     return (
-        <Grow in {...({ timeout: Math.random() * 1500 })}>
-            <Card className={classes.card}>
-                <CardHeader action={
-                    <IconButton aria-label='settings'>
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                    title={title}
-                    subheader={lastMod ? moment(lastMod).format('MMMM Do YYYY') : ''}
-                />
-                <CardActions disableSpacing>
-                    <IconButton aria-label='share'>
-                        <CopyIcon />
-                    </IconButton>
-                    <IconButton className={clsx(classes.expand, {
-                        [classes.expandOpen]: expanded
-                    })}
-                        onClick={handleExpandClick}
-                        aria-expanded={expanded}
-                        aria-label='show more'
-                    >
-                        <ExpandMoreIcon />
-                    </IconButton>
-                </CardActions>
-                <Collapse in={expanded} timeout='auto' unmountOnExit>
-                    <CardContent>
-                        <Typography paragraph>
-                            {content}
-                        </Typography>
-                    </CardContent>
-                </Collapse>
-            </Card>
-        </Grow>
+        <React.Fragment>
+            <Grow in {...({ timeout: Math.random() * 1500 })}>
+                <Card className={classes.card}>
+                    <CardHeader action={
+                        <NoteOptions />
+                    }
+                        title={title}
+                        subheader={lastMod ? moment(lastMod).format('MMMM Do YYYY') : ''}
+                    />
+                    <CardActions disableSpacing>
+                        <IconButton aria-label='share'>
+                            <CopyIcon />
+                        </IconButton>
+                        <IconButton className={clsx(classes.expand, {
+                            [classes.expandOpen]: expanded
+                        })}
+                            onClick={handleExpandClick}
+                            aria-expanded={expanded}
+                            aria-label='show more'
+                        >
+                            <ExpandMoreIcon />
+                        </IconButton>
+                    </CardActions>
+                    <Collapse in={expanded} timeout='auto' unmountOnExit>
+                        <CardContent>
+                            <Typography paragraph>
+                                {content}
+                            </Typography>
+                        </CardContent>
+                    </Collapse>
+                </Card>
+            </Grow>
+            <EditorBig onSave={handleNoteSave} id={id} title={title} content={content} isOpen={editorOn} onClose={onEditorClose} />
+        </React.Fragment>
     )
 }
