@@ -3,9 +3,10 @@ import NotesDisplay from './NotesDisplay'
 import { addNote, updateNote, deleteNote } from './actions'
 
 const mapStateToProps = (state) => {
-    const { notes } = state
+    const { notes, search } = state
     return {
-        notes
+        notes,
+        search
     }
 }
 
