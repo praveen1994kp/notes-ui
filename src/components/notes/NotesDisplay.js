@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function NotesDisplay({ notes, addNote }) {
+export default function NotesDisplay({ notes, addNote, deleteNote, updateNote }) {
     const classes = useStyles()
 
     const getNoteId = () => {
@@ -20,6 +20,14 @@ export default function NotesDisplay({ notes, addNote }) {
 
     const handleNoteAdd = ({ id, title, content }) => {
         addNote({ id: getNoteId(), title, content })
+    }
+
+    const handleNoteDelete = (id) => {
+        deleteNote(id)
+    }
+
+    const handleNoteUpdate = (id, title, content) => {
+        updateNote(id, title, content)
     }
 
     return (
@@ -32,6 +40,8 @@ export default function NotesDisplay({ notes, addNote }) {
                             id={note.id}
                             content={note.content}
                             title={note.title} lastMod={note.lastMod}
+                            onDelete={handleNoteDelete}
+                            onUpdate={handleNoteUpdate}
                         />
                     </Grid>
                 ))}
